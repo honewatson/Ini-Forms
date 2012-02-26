@@ -1,0 +1,33 @@
+<?php
+
+include "./ini_form.php";
+include "./sidebar.php";
+include "./compile.php";
+
+$sidebar = new ini_forms\sidebar('/home/honhon/NetBeansProjects/ini_forms/examples/sidebar.php', '/home/honhon/sites/chef-magento/toimport');
+
+$form = new ini_forms\ini_form('magento_set');
+
+
+
+if(isset($_GET['sku'])) {
+    
+    include "./csv/DataSource.php";
+    $csv = new File_CSV_DataSource;
+    $csv->load("/home/honhon/sites/chef-magento/toimport/{$_GET['sku']}");
+    $rows = $csv->connect();
+    $content = $form->render_form_from_values($rows[0]);
+    
+}
+else {
+    $content = $form->render_form();
+}
+
+
+$sidebar_content = $sidebar->get_content();
+
+
+
+
+
+include "./examples/main_template.php";
